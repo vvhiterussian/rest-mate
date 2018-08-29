@@ -59,7 +59,7 @@ public class UserTest {
 
         boolean isOrganizer = false;
         User user = new User("test-user-1", "qweqwe", isOrganizer, eventsDAO);
-        Event event = new Event("Test event", "Test event", new EventType("Test event type", EventKind.FUN), user, emptyMatesDAO);
+        Event event = new Event("Test event", "Test event", new EventType("Test event type", new EventKind("Fun")), user, emptyMatesDAO);
         try {
             user.addNewEvent(event);
         } catch (RuntimeException e) {}

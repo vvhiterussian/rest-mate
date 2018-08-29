@@ -16,7 +16,7 @@ public class EventTest {
     public void TestAddMateToEvent() {
         MatesDAO matesDAO = mock(MatesDAO.class);
         User organizer = mock(User.class);
-        Event event = new Event("Test event", "Test event", new EventType("Test event type", EventKind.FUN), organizer, matesDAO);
+        Event event = new Event("Test event", "Test event", new EventType("Test event type", new EventKind("Fun")), organizer, matesDAO);
 
         User mate = mock(User.class);
         try {
@@ -32,7 +32,7 @@ public class EventTest {
     public void TestRemoveMateFromEvent() {
         MatesDAO matesDAO = mock(MatesDAO.class);
         User organizer = mock(User.class);
-        Event event = new Event("Test event", "Test event", new EventType("Test event type", EventKind.FUN), organizer, matesDAO);
+        Event event = new Event("Test event", "Test event", new EventType("Test event type", new EventKind("Fun")), organizer, matesDAO);
 
         User mate = mock(User.class);
         try {
@@ -48,7 +48,7 @@ public class EventTest {
     public void TestGetMatesByEvent() {
         MatesDAO matesDAO = mock(MatesDAO.class);
         User organizer = mock(User.class);
-        Event event = new Event("Test event", "Test event", new EventType("Test event type", EventKind.FUN), organizer, matesDAO);
+        Event event = new Event("Test event", "Test event", new EventType("Test event type", new EventKind("Fun")), organizer, matesDAO);
 
         User user = mock(User.class);
         List<User> userList = Arrays.asList(user);
