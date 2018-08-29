@@ -2,10 +2,23 @@ package com.github.vvhiterussian.restmate.model;
 
 import com.github.vvhiterussian.restmate.dao.EventsDAO;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "USERS")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column
     private String login;
+
+    @Column
     private String password;
+
+    @Column
     private boolean isOrganizer;
 
     private EventsDAO eventsDAO;
@@ -18,6 +31,14 @@ public class User {
         this.password = password;
         this.isOrganizer = isOrganizator;
         this.eventsDAO = eventsDAO;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getLogin() {

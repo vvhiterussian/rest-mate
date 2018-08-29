@@ -2,13 +2,29 @@ package com.github.vvhiterussian.restmate.model;
 
 import com.github.vvhiterussian.restmate.dao.MatesDAO;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "EVENTS")
 public class Event {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
+
+    @Column
     private String name;
+
+    @Column
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "ID")
     private EventType eventType;
+
+    @ManyToOne
+    @JoinColumn(name = "ID")
     private User organizer;
 
     private MatesDAO matesDAO;
@@ -22,6 +38,14 @@ public class Event {
         this.eventType = eventType;
         this.organizer = organizer;
         this.matesDAO = matesDAO;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
