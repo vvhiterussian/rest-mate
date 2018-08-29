@@ -3,7 +3,7 @@ package com.github.vvhiterussian.restmate.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "ORGANIZER_STATUS_RESPONSE")
+@Table(name = "ORGANIZER_STATUS_RESPONSES")
 public class OrganizerStatusResponse {
 
     @Id

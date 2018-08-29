@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "EVENT_KIND")
+@Table(name = "EVENT_KINDS")
 public class EventKind {
 
     @Id
