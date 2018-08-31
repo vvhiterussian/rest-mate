@@ -3,6 +3,7 @@ package com.github.vvhiterussian.restmate.dao;
 import com.github.vvhiterussian.restmate.model.Event;
 import com.github.vvhiterussian.restmate.model.EventKind;
 import com.github.vvhiterussian.restmate.model.EventType;
+import com.github.vvhiterussian.restmate.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
@@ -29,6 +30,36 @@ public class EventsDAOImpl implements EventsDAO {
         entityManager.getTransaction().begin();
 
         try {
+            entityManager.persist(event);
+            entityManager.getTransaction().commit();
+        } catch (PersistenceException e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        }
+    }
+
+    @Override
+    public void addMate(Event event, User user) {
+        entityManager.getTransaction().begin();
+
+        try {
+            event.getMates().add(user);
+
+            entityManager.persist(event);
+            entityManager.getTransaction().commit();
+        } catch (PersistenceException e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        }
+    }
+
+    @Override
+    public void removeMate(Event event, User user) {
+        entityManager.getTransaction().begin();
+
+        try {
+            event.getMates().remove(user);
+
             entityManager.persist(event);
             entityManager.getTransaction().commit();
         } catch (PersistenceException e) {

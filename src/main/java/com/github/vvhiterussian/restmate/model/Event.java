@@ -1,9 +1,7 @@
 package com.github.vvhiterussian.restmate.model;
 
-import com.github.vvhiterussian.restmate.dao.MatesDAO;
-
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "EVENTS")
@@ -27,17 +25,20 @@ public class Event {
     @JoinColumn(name = "ID")
     private User organizer;
 
-    private MatesDAO matesDAO;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "MATES",
+               joinColumns = @JoinColumn(name = "EVENT_ID", referencedColumnName = "ID"),
+               inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"))
+    private Set<User> mates;
 
     public Event() {
     }
 
-    public Event(String name, String description, EventType eventType, User organizer, MatesDAO matesDAO) {
+    public Event(String name, String description, EventType eventType, User organizer) {
         this.name = name;
         this.description = description;
         this.eventType = eventType;
         this.organizer = organizer;
-        this.matesDAO = matesDAO;
     }
 
     public int getId() {
@@ -80,22 +81,26 @@ public class Event {
         this.organizer = organizer;
     }
 
-    public List<User> getMates() {
-        return matesDAO.getMatesByEvent(this);
+    public Set<User> getMates() {
+        return mates;
+    }
+
+    public void setMates(Set<User> mates) {
+        this.mates = mates;
     }
 
     //может быть не в этом классе - добавляет user у которого isOrganizer = true
-    public void addMate(User user) {
-        if (user == null)
-            throw new IllegalArgumentException("User shouldn't be null.");
-
-        matesDAO.addMateToEvent(this, user);
-    }
-
-    public void removeMate(User user) {
-        if (user == null)
-            throw new IllegalArgumentException("User shouldn't be null.");
-
-        matesDAO.removeMateFromEvent(this, user);
-    }
+//    public void addMate(User user) {
+//        if (user == null)
+//            throw new IllegalArgumentException("User shouldn't be null.");
+//
+//        matesDAO.addMateToEvent(this, user);
+//    }
+//
+//    public void removeMate(User user) {
+//        if (user == null)
+//            throw new IllegalArgumentException("User shouldn't be null.");
+//
+//        matesDAO.removeMateFromEvent(this, user);
+//    }
 }

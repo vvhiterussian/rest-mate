@@ -3,6 +3,7 @@ package com.github.vvhiterussian.restmate.model;
 import com.github.vvhiterussian.restmate.dao.EventsDAO;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
@@ -20,6 +21,9 @@ public class User {
 
     @Column
     private boolean isOrganizer;
+
+    @ManyToMany(mappedBy = "mates", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Event> userEvents;
 
     private EventsDAO eventsDAO;
 
@@ -63,6 +67,14 @@ public class User {
 
     public void setOrganizer(boolean organizer) {
         isOrganizer = organizer;
+    }
+
+    public Set<Event> getUserEvents() {
+        return userEvents;
+    }
+
+    public void setUserEvents(Set<Event> userEvents) {
+        this.userEvents = userEvents;
     }
 
     public void addNewEvent(Event event) {
