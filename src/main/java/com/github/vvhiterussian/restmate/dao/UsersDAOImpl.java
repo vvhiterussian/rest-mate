@@ -14,8 +14,8 @@ public class UsersDAOImpl implements UsersDAO {
 
     @Override
     public User findByLogin(String login) {
-        return (User)entityManager.createQuery("select u from User u where u.login like :login")
-                .setParameter("login", "%" + login + "%")
+        return entityManager.createQuery("select u from User u where u.login = :login", User.class)
+                .setParameter("login", login)
                 .getSingleResult();
     }
 
