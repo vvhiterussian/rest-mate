@@ -7,6 +7,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING)
 public class User {
 
     @Id
@@ -25,6 +27,7 @@ public class User {
     @ManyToMany(mappedBy = "mates", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Event> userEvents;
 
+    @Transient
     private EventsDAO eventsDAO;
 
     public User() {
