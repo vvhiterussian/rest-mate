@@ -14,7 +14,7 @@ public class EventType {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "ID", nullable = false)
+    @JoinColumn(name = "EVENT_KIND_ID", nullable = false)
     private EventKind eventKind;
 
     public EventType() {

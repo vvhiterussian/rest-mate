@@ -12,11 +12,11 @@ public class MateStatusRequest {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "ID")
+    @JoinColumn(name = "EVENT_ID")
     private Event event;
 
     @ManyToOne
-    @JoinColumn(name = "ID")
+    @JoinColumn(name = "CANDIDATE_ID")
     private User candidate;
 
     @OneToOne(mappedBy = "request", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

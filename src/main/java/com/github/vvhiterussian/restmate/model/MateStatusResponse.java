@@ -14,11 +14,11 @@ public class MateStatusResponse {
     private boolean isMateConfirmed;
 
     @ManyToOne
-    @JoinColumn(name = "ID")
+    @JoinColumn(name = "ORGANIZER_ID")
     private User organizer;
 
     @OneToOne
-    @JoinColumn(name = "ID")
+    @JoinColumn(name = "REQUEST_ID")
     private MateStatusRequest request;
 
     public MateStatusResponse() {

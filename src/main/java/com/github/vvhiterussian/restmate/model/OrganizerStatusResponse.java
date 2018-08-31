@@ -14,11 +14,11 @@ public class OrganizerStatusResponse {
     private boolean isOrganizerConfirmed;
 
     @ManyToOne
-    @JoinColumn(name = "ID")
+    @JoinColumn(name = "OBSERVER_ID")
     private User observer;
 
     @OneToOne
-    @JoinColumn(name = "ID")
+    @JoinColumn(name = "REQUEST_ID")
     private OrganizerStatusRequest request;
 
     public OrganizerStatusResponse() {

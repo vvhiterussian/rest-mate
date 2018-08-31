@@ -18,11 +18,11 @@ public class Event {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "ID")
+    @JoinColumn(name = "EVENT_TYPE_ID")
     private EventType eventType;
 
     @ManyToOne
-    @JoinColumn(name = "ID")
+    @JoinColumn(name = "ORGANIZER_ID")
     private User organizer;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
