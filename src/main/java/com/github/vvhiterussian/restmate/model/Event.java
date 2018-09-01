@@ -1,6 +1,7 @@
 package com.github.vvhiterussian.restmate.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -39,6 +40,7 @@ public class Event {
         this.description = description;
         this.eventType = eventType;
         this.organizer = organizer;
+        mates = new HashSet<>();
     }
 
     public int getId() {

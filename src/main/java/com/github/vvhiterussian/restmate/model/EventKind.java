@@ -11,7 +11,7 @@ public class EventKind {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
+    @Column(unique = true)
     private String name;
 
     @OneToMany(mappedBy = "eventKind", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

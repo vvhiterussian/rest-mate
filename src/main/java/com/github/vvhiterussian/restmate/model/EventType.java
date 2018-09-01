@@ -13,7 +13,7 @@ public class EventType {
     @Column
     private String name;
 
-    @ManyToOne
+    @ManyToOne//(cascade = CascadeType.ALL) - no cascade for eventKind, because it is a dictionary
     @JoinColumn(name = "EVENT_KIND_ID", nullable = false)
     private EventKind eventKind;
 
