@@ -21,7 +21,7 @@ public class EventTypesDAOImpl implements EventTypesDAO {
     }
 
     @Override
-    public List<EventType> searchEventTypes(EventKind eventKind) {
+    public List<EventType> findEventTypes(EventKind eventKind) {
         return entityManager.createQuery("select et from EventType et where et.eventKind = :eventKind")
                 .setParameter("eventKind", eventKind)
                 .getResultList();

@@ -8,7 +8,7 @@ import java.util.List;
 public interface EventTypesDAO {
 
     List<EventType> getEventTypes();
-    List<EventType> searchEventTypes(EventKind eventKind); // +поиск по тегам
+    List<EventType> findEventTypes(EventKind eventKind); // +поиск по тегам
     void addEventType(EventType eventType);
 
 }

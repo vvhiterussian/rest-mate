@@ -13,4 +13,5 @@ public interface EventsDAO {
 
     void addMate(Event event, User user);
     void removeMate(Event event, User user);
+    List<User> getMates(Event event);
 }

@@ -67,4 +67,11 @@ public class EventsDAOImpl implements EventsDAO {
             throw e;
         }
     }
+
+    @Override
+    public List<User> getMates(Event event) {
+        return entityManager.createQuery("select distinct m from Event e join e.mates m where e = :event")
+                .setParameter("event", event)
+                .getResultList();
+    }
 }
