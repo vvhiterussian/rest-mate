@@ -4,6 +4,8 @@ import com.github.vvhiterussian.restmate.model.Event;
 import com.github.vvhiterussian.restmate.model.MateStatusRequest;
 import com.github.vvhiterussian.restmate.model.MateStatusResponse;
 import com.github.vvhiterussian.restmate.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
@@ -11,8 +13,10 @@ import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class MateStatusRequestsDAOImpl implements MateStatusRequestsDAO {
 
+    @Autowired
     private EntityManager entityManager;
 
     public MateStatusRequestsDAOImpl(EntityManager entityManager) {

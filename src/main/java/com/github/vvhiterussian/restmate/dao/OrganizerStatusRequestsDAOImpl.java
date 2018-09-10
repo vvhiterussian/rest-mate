@@ -1,6 +1,8 @@
 package com.github.vvhiterussian.restmate.dao;
 
 import com.github.vvhiterussian.restmate.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
@@ -8,7 +10,10 @@ import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class OrganizerStatusRequestsDAOImpl implements OrganizerStatusRequestsDAO {
+
+    @Autowired
     private EntityManager entityManager;
 
     public OrganizerStatusRequestsDAOImpl(EntityManager entityManager) {

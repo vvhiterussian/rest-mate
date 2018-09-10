@@ -1,14 +1,18 @@
 package com.github.vvhiterussian.restmate.dao;
 
 import com.github.vvhiterussian.restmate.model.EventKind;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
+@Repository
 public class EventKindsDAOImpl implements EventKindsDAO {
 
+    @Autowired
     private EntityManager entityManager;
 
     public EventKindsDAOImpl(EntityManager entityManager) {

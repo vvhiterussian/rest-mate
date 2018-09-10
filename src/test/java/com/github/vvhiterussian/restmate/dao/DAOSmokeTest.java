@@ -1,37 +1,25 @@
 package com.github.vvhiterussian.restmate.dao;
 
 import com.github.vvhiterussian.restmate.model.*;
-import org.junit.After;
-import org.junit.Before;
+import com.github.vvhiterussian.restmate.web.config.TestEntityManagerConfiguration;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import static org.junit.Assert.assertEquals;
 
+@ContextConfiguration(classes = TestEntityManagerConfiguration.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DAOSmokeTest {
 
-    private EntityManagerFactory emf;
+    @Autowired
     private EntityManager em;
-
-    @Before
-    public void setup() {
-        emf = Persistence.createEntityManagerFactory("TestPersistenceUnit");
-        em = emf.createEntityManager();
-    }
-
-    @After
-    public void clean() {
-        if (em != null) {
-            em.close();
-        }
-
-        if (emf != null) {
-            emf.close();
-        }
-    }
 
     //EventKindsDAO Tests
     @Test

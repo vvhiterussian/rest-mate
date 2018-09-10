@@ -1,6 +1,8 @@
 package com.github.vvhiterussian.restmate.dao;
 
 import com.github.vvhiterussian.restmate.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
@@ -8,7 +10,10 @@ import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class UsersDAOImpl implements UsersDAO {
+
+    @Autowired
     private EntityManager entityManager;
 
     public UsersDAOImpl(EntityManager entityManager) {
@@ -29,13 +34,6 @@ public class UsersDAOImpl implements UsersDAO {
         cq.select(user).where(predicates.toArray(new Predicate[]{}));
 
         return entityManager.createQuery(cq).getSingleResult();
-
-//        ParameterExpression<String> loginExpression = cb.parameter(String.class);
-//        cq.select(user).where(cb.equal(user.get("login"), loginExpression));
-//
-//        return entityManager.createQuery(cq)
-//                .setParameter(loginExpression, login)
-//                .getSingleResult();
     }
 
     @Override

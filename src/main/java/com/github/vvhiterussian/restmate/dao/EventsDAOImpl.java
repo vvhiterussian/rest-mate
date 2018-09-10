@@ -4,6 +4,8 @@ import com.github.vvhiterussian.restmate.model.Event;
 import com.github.vvhiterussian.restmate.model.EventKind;
 import com.github.vvhiterussian.restmate.model.EventType;
 import com.github.vvhiterussian.restmate.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
@@ -12,7 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Repository
 public class EventsDAOImpl implements EventsDAO {
+
+    @Autowired
     private EntityManager entityManager;
 
     public EventsDAOImpl(EntityManager entityManager) {
