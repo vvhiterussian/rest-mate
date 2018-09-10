@@ -21,6 +21,30 @@ public class DAOSmokeTest {
     @Autowired
     private EntityManager em;
 
+    @Autowired
+    EventKindsDAO eventKindsDAO;
+
+    @Autowired
+    EventTypesDAO eventTypesDAO;
+
+    @Autowired
+    UsersDAO usersDAO;
+
+    @Autowired
+    EventsDAO eventsDAO;
+
+    @Autowired
+    MateStatusRequestsDAO mateStatusRequestsDAO;
+
+    @Autowired
+    MateStatusResponsesDAO mateStatusResponsesDAO;
+
+    @Autowired
+    OrganizerStatusRequestsDAO organizerStatusRequestsDAO;
+
+    @Autowired
+    OrganizerStatusResponsesDAO organizerStatusResponsesDAO;
+
     //EventKindsDAO Tests
     @Test
     public void addEventKindAndGetEventKindsTest()
@@ -28,7 +52,6 @@ public class DAOSmokeTest {
         EventKind eventKind1 = new EventKind("test-event-kind-1");
         EventKind eventKind2 = new EventKind("test-event-kind-2");
 
-        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
         eventKindsDAO.addEventKind(eventKind1);
         eventKindsDAO.addEventKind(eventKind2);
 
@@ -44,10 +67,7 @@ public class DAOSmokeTest {
         EventType eventType = new EventType("test-event-type-1", eventKind);
 
         //no need to persist eventKind if @Entity field mapped with cascade setting
-        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
         eventKindsDAO.addEventKind(eventKind);
-
-        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
         eventTypesDAO.addEventType(eventType);
 
         assertEquals(1, eventTypesDAO.getEventTypes().size());
@@ -60,10 +80,7 @@ public class DAOSmokeTest {
         EventType eventType = new EventType("test-event-type-1", eventKind);
 
         //no need to persist eventKind if @Entity field mapped with cascade setting
-        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
         eventKindsDAO.addEventKind(eventKind);
-
-        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
         eventTypesDAO.addEventType(eventType);
 
         assertEquals(1, eventTypesDAO.findEventTypes(eventKind).size());
@@ -73,12 +90,8 @@ public class DAOSmokeTest {
     //UsersDAO Tests
     @Test
     public void userAddAndFind() {
-        UsersDAO usersDAO = new UsersDAOImpl(em);
-        EventsDAO eventsDAO = new EventsDAOImpl(em);
         User user = new AdminUser("test-user-1", "password", false, eventsDAO, usersDAO);
-
         usersDAO.addUser(user);
-
         assertEquals(user, usersDAO.findByLogin("test-user-1"));
     }
 
@@ -88,16 +101,10 @@ public class DAOSmokeTest {
         EventKind eventKind = new EventKind("test-event-kind-1");
         EventType eventType = new EventType("test-event-type-1", eventKind);
 
-        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
         eventKindsDAO.addEventKind(eventKind);
-
-        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
         eventTypesDAO.addEventType(eventType);
 
-        EventsDAO eventsDAO = new EventsDAOImpl(em);
         User organizer = new User("test-user-1", "pass", true, eventsDAO);
-
-        UsersDAO usersDAO = new UsersDAOImpl(em);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
@@ -116,16 +123,10 @@ public class DAOSmokeTest {
         EventKind eventKind = new EventKind("test-event-kind-1");
         EventType eventType = new EventType("test-event-type-1", eventKind);
 
-        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
         eventKindsDAO.addEventKind(eventKind);
-
-        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
         eventTypesDAO.addEventType(eventType);
 
-        EventsDAO eventsDAO = new EventsDAOImpl(em);
         User organizer = new User("test-user-1", "pass", true, eventsDAO);
-
-        UsersDAO usersDAO = new UsersDAOImpl(em);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
@@ -143,16 +144,10 @@ public class DAOSmokeTest {
         EventKind eventKind = new EventKind("test-event-kind-1");
         EventType eventType = new EventType("test-event-type-1", eventKind);
 
-        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
         eventKindsDAO.addEventKind(eventKind);
-
-        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
         eventTypesDAO.addEventType(eventType);
 
-        EventsDAO eventsDAO = new EventsDAOImpl(em);
         User organizer = new User("test-user-1", "pass", true, eventsDAO);
-
-        UsersDAO usersDAO = new UsersDAOImpl(em);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
@@ -176,16 +171,10 @@ public class DAOSmokeTest {
         EventKind eventKind = new EventKind("test-event-kind-1");
         EventType eventType = new EventType("test-event-type-1", eventKind);
 
-        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
         eventKindsDAO.addEventKind(eventKind);
-
-        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
         eventTypesDAO.addEventType(eventType);
 
-        EventsDAO eventsDAO = new EventsDAOImpl(em);
         User organizer = new User("test-user-1", "pass", true, eventsDAO);
-
-        UsersDAO usersDAO = new UsersDAOImpl(em);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
@@ -193,7 +182,6 @@ public class DAOSmokeTest {
         eventsDAO.addEvent(event);
         usersDAO.addUser(candidate);
 
-        MateStatusRequestsDAO mateStatusRequestsDAO = new MateStatusRequestsDAOImpl(em);
         MateStatusRequest request = new MateStatusRequest(event, candidate);
         mateStatusRequestsDAO.addRequest(request);
 
@@ -206,16 +194,10 @@ public class DAOSmokeTest {
         EventKind eventKind = new EventKind("test-event-kind-1");
         EventType eventType = new EventType("test-event-type-1", eventKind);
 
-        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
         eventKindsDAO.addEventKind(eventKind);
-
-        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
         eventTypesDAO.addEventType(eventType);
 
-        EventsDAO eventsDAO = new EventsDAOImpl(em);
         User organizer = new User("test-user-1", "pass", true, eventsDAO);
-
-        UsersDAO usersDAO = new UsersDAOImpl(em);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
@@ -223,7 +205,6 @@ public class DAOSmokeTest {
         eventsDAO.addEvent(event);
         usersDAO.addUser(candidate);
 
-        MateStatusRequestsDAO mateStatusRequestsDAO = new MateStatusRequestsDAOImpl(em);
         MateStatusRequest request = new MateStatusRequest(event, candidate);
         mateStatusRequestsDAO.addRequest(request);
 
@@ -240,16 +221,10 @@ public class DAOSmokeTest {
         EventKind eventKind = new EventKind("test-event-kind-1");
         EventType eventType = new EventType("test-event-type-1", eventKind);
 
-        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
         eventKindsDAO.addEventKind(eventKind);
-
-        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
         eventTypesDAO.addEventType(eventType);
 
-        EventsDAO eventsDAO = new EventsDAOImpl(em);
         User organizer = new User("test-user-1", "pass", true, eventsDAO);
-
-        UsersDAO usersDAO = new UsersDAOImpl(em);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
@@ -257,7 +232,6 @@ public class DAOSmokeTest {
         eventsDAO.addEvent(event);
         usersDAO.addUser(candidate);
 
-        MateStatusRequestsDAO mateStatusRequestsDAO = new MateStatusRequestsDAOImpl(em);
         MateStatusRequest request = new MateStatusRequest(event, candidate);
         mateStatusRequestsDAO.addRequest(request);
 
@@ -274,16 +248,10 @@ public class DAOSmokeTest {
         EventKind eventKind = new EventKind("test-event-kind-1");
         EventType eventType = new EventType("test-event-type-1", eventKind);
 
-        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
         eventKindsDAO.addEventKind(eventKind);
-
-        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
         eventTypesDAO.addEventType(eventType);
 
-        EventsDAO eventsDAO = new EventsDAOImpl(em);
         User organizer = new User("test-user-1", "pass", true, eventsDAO);
-
-        UsersDAO usersDAO = new UsersDAOImpl(em);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
@@ -291,11 +259,9 @@ public class DAOSmokeTest {
         eventsDAO.addEvent(event);
         usersDAO.addUser(candidate);
 
-        MateStatusRequestsDAO mateStatusRequestsDAO = new MateStatusRequestsDAOImpl(em);
         MateStatusRequest request = new MateStatusRequest(event, candidate);
         mateStatusRequestsDAO.addRequest(request);
 
-        MateStatusResponsesDAO mateStatusResponsesDAO = new MateStatusResponsesDAOImpl(em);
         MateStatusResponse response = new MateStatusResponse(true, organizer, request);
         mateStatusResponsesDAO.addResponse(response);
 
@@ -306,12 +272,9 @@ public class DAOSmokeTest {
     //OrganizerStatusRequestsDAO Tests
     @Test
     public void addOrganizerStatusRequestAndGetRequests() {
-        EventsDAO eventsDAO = new EventsDAOImpl(em);
-        UsersDAO usersDAO = new UsersDAOImpl(em);
         User candidate = new User("test-user-1", "pass", true, eventsDAO);
         usersDAO.addUser(candidate);
 
-        OrganizerStatusRequestsDAO organizerStatusRequestsDAO = new OrganizerStatusRequestsDAOImpl(em);
         OrganizerStatusRequest request = new OrganizerStatusRequest(candidate);
         organizerStatusRequestsDAO.addRequest(request);
 
@@ -321,12 +284,9 @@ public class DAOSmokeTest {
 
     @Test
     public void addOrganizerStatusRequestAndFind() {
-        EventsDAO eventsDAO = new EventsDAOImpl(em);
-        UsersDAO usersDAO = new UsersDAOImpl(em);
         User candidate = new User("test-user-1", "pass", true, eventsDAO);
         usersDAO.addUser(candidate);
 
-        OrganizerStatusRequestsDAO organizerStatusRequestsDAO = new OrganizerStatusRequestsDAOImpl(em);
         OrganizerStatusRequest request = new OrganizerStatusRequest(candidate);
         organizerStatusRequestsDAO.addRequest(request);
 
@@ -337,12 +297,9 @@ public class DAOSmokeTest {
 
     @Test
     public void cancelOrganizerStatusRequestAndGetRequests() {
-        EventsDAO eventsDAO = new EventsDAOImpl(em);
-        UsersDAO usersDAO = new UsersDAOImpl(em);
         User candidate = new User("test-user-1", "pass", true, eventsDAO);
         usersDAO.addUser(candidate);
 
-        OrganizerStatusRequestsDAO organizerStatusRequestsDAO = new OrganizerStatusRequestsDAOImpl(em);
         OrganizerStatusRequest request = new OrganizerStatusRequest(candidate);
         organizerStatusRequestsDAO.addRequest(request);
 
@@ -355,20 +312,16 @@ public class DAOSmokeTest {
     //OrganizerStatusResponsesDAO Tests
     @Test
     public void addOrganizerStatusResponseAndGetResponses() {
-        EventsDAO eventsDAO = new EventsDAOImpl(em);
-        UsersDAO usersDAO = new UsersDAOImpl(em);
         User candidate = new User("test-user-1", "pass", true, eventsDAO);
         User observer = new AdminUser("observer", "observer", true, eventsDAO, usersDAO);
         usersDAO.addUser(candidate);
         usersDAO.addUser(observer);
 
-        OrganizerStatusRequestsDAO organizerStatusRequestsDAO = new OrganizerStatusRequestsDAOImpl(em);
         OrganizerStatusRequest request = new OrganizerStatusRequest(candidate);
         organizerStatusRequestsDAO.addRequest(request);
 
         assertEquals(1, organizerStatusRequestsDAO.getRequests().size());
 
-        OrganizerStatusResponsesDAO organizerStatusResponsesDAO = new OrganizerStatusResponsesDAOImpl(em);
         OrganizerStatusResponse response = new OrganizerStatusResponse(true, observer, request);
         organizerStatusResponsesDAO.addResponse(response);
 
