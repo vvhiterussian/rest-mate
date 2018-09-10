@@ -4,6 +4,9 @@ import com.github.vvhiterussian.restmate.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsersDAOImpl implements UsersDAO {
     private EntityManager entityManager;
@@ -14,9 +17,25 @@ public class UsersDAOImpl implements UsersDAO {
 
     @Override
     public User findByLogin(String login) {
-        return entityManager.createQuery("select u from User u where u.login = :login", User.class)
-                .setParameter("login", login)
-                .getSingleResult();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> cq = cb.createQuery(User.class);
+        Root<User> user = cq.from(User.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+        if (!login.equals("")) {
+            predicates.add(cb.equal(user.get("login"), login));
+        }
+
+        cq.select(user).where(predicates.toArray(new Predicate[]{}));
+
+        return entityManager.createQuery(cq).getSingleResult();
+
+//        ParameterExpression<String> loginExpression = cb.parameter(String.class);
+//        cq.select(user).where(cb.equal(user.get("login"), loginExpression));
+//
+//        return entityManager.createQuery(cq)
+//                .setParameter(loginExpression, login)
+//                .getSingleResult();
     }
 
     @Override

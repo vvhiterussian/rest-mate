@@ -7,7 +7,10 @@ import com.github.vvhiterussian.restmate.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class EventsDAOImpl implements EventsDAO {
     private EntityManager entityManager;
@@ -18,10 +21,29 @@ public class EventsDAOImpl implements EventsDAO {
 
     @Override
     public List<Event> findEvents(EventKind eventKind, EventType eventType, String name) {
-        return entityManager.createQuery("select e from Event e where e.eventType = :eventType or e.eventType.eventKind = :eventKind or e.name like :name")
-                .setParameter("eventType", eventType)
-                .setParameter("eventKind", eventKind)
-                .setParameter("name", "%" + eventType + "%")
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Event> cq = cb.createQuery(Event.class);
+
+        Root<Event> eventRoot = cq.from(Event.class);
+        Join<Event, EventType> eventTypeJoin = eventRoot.join("eventType", JoinType.INNER);
+        Join<EventType, EventKind> eventKindJoin = eventTypeJoin.join("eventKind", JoinType.INNER);
+
+        List<Predicate> predicates = new ArrayList<>();
+        if (eventKind != null) {
+            predicates.add(cb.equal(eventTypeJoin.get("eventKind"), eventKind));
+        }
+
+        if (eventType != null) {
+            predicates.add(cb.equal(eventRoot.get("eventType"), eventType));
+        }
+
+        if (!name.equals("")) {
+            predicates.add(cb.like(eventRoot.get("name"), "%" + name + "%"));
+        }
+
+        cq.select(eventRoot).where(predicates.toArray(new Predicate[]{}));
+
+        return entityManager.createQuery(cq)
                 .getResultList();
     }
 
@@ -69,9 +91,7 @@ public class EventsDAOImpl implements EventsDAO {
     }
 
     @Override
-    public List<User> getMates(Event event) {
-        return entityManager.createQuery("select distinct m from Event e join e.mates m where e = :event")
-                .setParameter("event", event)
-                .getResultList();
+    public Set<User> getMates(Event event) {
+        return event.getMates();
     }
 }

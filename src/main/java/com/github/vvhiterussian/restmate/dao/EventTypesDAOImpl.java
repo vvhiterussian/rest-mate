@@ -5,6 +5,8 @@ import com.github.vvhiterussian.restmate.model.EventType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventTypesDAOImpl implements EventTypesDAO {
@@ -16,14 +18,29 @@ public class EventTypesDAOImpl implements EventTypesDAO {
 
     @Override
     public List<EventType> getEventTypes() {
-        return entityManager.createQuery("select et from EventType et")
+        CriteriaQuery<EventType> cq = entityManager.getCriteriaBuilder().createQuery(EventType.class);
+        cq.select(cq.from(EventType.class));
+
+        return entityManager.createQuery(cq)
                 .getResultList();
     }
 
     @Override
     public List<EventType> findEventTypes(EventKind eventKind) {
-        return entityManager.createQuery("select et from EventType et where et.eventKind = :eventKind")
-                .setParameter("eventKind", eventKind)
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<EventType> cq = cb.createQuery(EventType.class);
+
+        Root<EventType> eventTypeRoot = cq.from(EventType.class);
+        Join<EventType, EventKind> join = eventTypeRoot.join("eventKind", JoinType.INNER);
+
+        List<Predicate> predicates = new ArrayList<>();
+        if (eventKind != null) {
+            predicates.add(cb.equal(eventTypeRoot.get("eventKind"), eventKind));
+        }
+
+        cq.select(eventTypeRoot).where(predicates.toArray(new Predicate[]{}));
+
+        return entityManager.createQuery(cq)
                 .getResultList();
     }
 

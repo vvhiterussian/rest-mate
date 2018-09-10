@@ -6,6 +6,7 @@ import com.github.vvhiterussian.restmate.model.EventType;
 import com.github.vvhiterussian.restmate.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface EventsDAO {
     List<Event> findEvents(EventKind eventKind, EventType eventType, String name);
@@ -13,5 +14,5 @@ public interface EventsDAO {
 
     void addMate(Event event, User user);
     void removeMate(Event event, User user);
-    List<User> getMates(Event event);
+    Set<User> getMates(Event event);
 }

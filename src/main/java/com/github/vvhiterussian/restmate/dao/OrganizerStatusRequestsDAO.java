@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrganizerStatusRequestsDAO {
     List<OrganizerStatusRequest> getRequests();
-    List<OrganizerStatusRequest> findRequests(User user, boolean hasResponse);
+    List<OrganizerStatusRequest> findRequests(User candidate, boolean hasResponse);
     void addRequest(OrganizerStatusRequest request);
     void cancelRequest(OrganizerStatusRequest request);
 }

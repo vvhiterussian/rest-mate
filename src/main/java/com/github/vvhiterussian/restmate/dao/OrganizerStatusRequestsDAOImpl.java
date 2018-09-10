@@ -1,10 +1,11 @@
 package com.github.vvhiterussian.restmate.dao;
 
-import com.github.vvhiterussian.restmate.model.OrganizerStatusRequest;
-import com.github.vvhiterussian.restmate.model.User;
+import com.github.vvhiterussian.restmate.model.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrganizerStatusRequestsDAOImpl implements OrganizerStatusRequestsDAO {
@@ -16,21 +17,33 @@ public class OrganizerStatusRequestsDAOImpl implements OrganizerStatusRequestsDA
 
     @Override
     public List<OrganizerStatusRequest> getRequests() {
-        return entityManager.createQuery("select osr from OrganizerStatusRequest osr")
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<OrganizerStatusRequest> cq = cb.createQuery(OrganizerStatusRequest.class);
+
+        cq.select(cq.from(OrganizerStatusRequest.class));
+
+        return entityManager.createQuery(cq)
                 .getResultList();
     }
 
     @Override
-    public List<OrganizerStatusRequest> findRequests(User user, boolean hasResponse) {
-        String findRequestsQuery =
-                "select osr " +
-                "from OrganizerStatusRequest osr " +
-                "where osr.candidate = :user or " +
-                "((:hasResponse = true and osr.response is not null) or (:hasResponse = false and osr.response is null))";
+    public List<OrganizerStatusRequest> findRequests(User candidate, boolean hasResponse) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<OrganizerStatusRequest> cq = cb.createQuery(OrganizerStatusRequest.class);
 
-        return entityManager.createQuery(findRequestsQuery)
-                .setParameter("user", user)
-                .setParameter("hasResponse", hasResponse)
+        Root<OrganizerStatusRequest> requestRoot = cq.from(OrganizerStatusRequest.class);
+        Join<OrganizerStatusRequest, User> userJoin = requestRoot.join("candidate", JoinType.INNER);
+        Join<OrganizerStatusRequest, OrganizerStatusResponse> responseJoin = requestRoot.join("response", JoinType.LEFT);
+
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(hasResponse ? cb.isNotNull(responseJoin.get("id")) : cb.isNull(responseJoin.get("id")));
+        if (candidate != null) {
+            predicates.add(cb.equal(requestRoot.get("candidate"), candidate));
+        }
+
+        cq.select(requestRoot).where(predicates.toArray(new Predicate[]{}));
+
+        return entityManager.createQuery(cq)
                 .getResultList();
     }
 
@@ -49,8 +62,11 @@ public class OrganizerStatusRequestsDAOImpl implements OrganizerStatusRequestsDA
 
     @Override
     public void cancelRequest(OrganizerStatusRequest request) {
-        entityManager.getTransaction().begin();
+        if (request.getResponse() != null) {
+            throw new RuntimeException("Cannot cancel request that has response.");
+        }
 
+        entityManager.getTransaction().begin();
         try {
             entityManager.remove(request);
             entityManager.getTransaction().commit();

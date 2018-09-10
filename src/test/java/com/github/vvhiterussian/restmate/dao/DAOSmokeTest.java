@@ -116,6 +116,10 @@ public class DAOSmokeTest {
         eventsDAO.addEvent(event);
 
         assertEquals(1, eventsDAO.findEvents(eventKind, eventType, "event-1").size());
+        assertEquals(1, eventsDAO.findEvents(eventKind, eventType, "").size());
+        assertEquals(1, eventsDAO.findEvents(eventKind, null, "event-1").size());
+        assertEquals(1, eventsDAO.findEvents(null, eventType, "event-1").size());
+        assertEquals(0, eventsDAO.findEvents(null, null, "event-2").size());
         assertEquals(event, eventsDAO.findEvents(eventKind, eventType, "event-1").get(0));
     }
 
@@ -143,16 +147,243 @@ public class DAOSmokeTest {
         eventsDAO.addMate(event, mate);
 
         assertEquals(1, eventsDAO.getMates(event).size());
-        assertEquals(mate, eventsDAO.getMates(event).get(0));
+        assertEquals(mate, eventsDAO.getMates(event).toArray()[0]);
+    }
+
+    @Test
+    public void removeMateFromEvent() {
+        EventKind eventKind = new EventKind("test-event-kind-1");
+        EventType eventType = new EventType("test-event-type-1", eventKind);
+
+        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
+        eventKindsDAO.addEventKind(eventKind);
+
+        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
+        eventTypesDAO.addEventType(eventType);
+
+        EventsDAO eventsDAO = new EventsDAOImpl(em);
+        User organizer = new User("test-user-1", "pass", true, eventsDAO);
+
+        UsersDAO usersDAO = new UsersDAOImpl(em);
+        usersDAO.addUser(organizer);
+
+        Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
+        eventsDAO.addEvent(event);
+
+        User mate = new User("mate-1", "mate-1-pass", false, eventsDAO);
+        eventsDAO.addMate(event, mate);
+
+        assertEquals(1, eventsDAO.getMates(event).size());
+
+        User userToRemove = usersDAO.findByLogin("mate-1");
+        eventsDAO.removeMate(event, userToRemove);
+
+        assertEquals(0, eventsDAO.getMates(event).size());
     }
 
 
-
     //MateStatusRequestsDAO Tests
+    @Test
+    public void addMateStatusRequestAndGetRequests() {
+        EventKind eventKind = new EventKind("test-event-kind-1");
+        EventType eventType = new EventType("test-event-type-1", eventKind);
+
+        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
+        eventKindsDAO.addEventKind(eventKind);
+
+        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
+        eventTypesDAO.addEventType(eventType);
+
+        EventsDAO eventsDAO = new EventsDAOImpl(em);
+        User organizer = new User("test-user-1", "pass", true, eventsDAO);
+
+        UsersDAO usersDAO = new UsersDAOImpl(em);
+        usersDAO.addUser(organizer);
+
+        Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
+        User candidate = new User("candidate-1", "mate-1-pass", false, eventsDAO);
+        eventsDAO.addEvent(event);
+        usersDAO.addUser(candidate);
+
+        MateStatusRequestsDAO mateStatusRequestsDAO = new MateStatusRequestsDAOImpl(em);
+        MateStatusRequest request = new MateStatusRequest(event, candidate);
+        mateStatusRequestsDAO.addRequest(request);
+
+        assertEquals(1, mateStatusRequestsDAO.getRequests().size());
+        assertEquals(request, mateStatusRequestsDAO.getRequests().get(0));
+    }
+
+    @Test
+    public void addMateStatusRequestAndFind() {
+        EventKind eventKind = new EventKind("test-event-kind-1");
+        EventType eventType = new EventType("test-event-type-1", eventKind);
+
+        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
+        eventKindsDAO.addEventKind(eventKind);
+
+        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
+        eventTypesDAO.addEventType(eventType);
+
+        EventsDAO eventsDAO = new EventsDAOImpl(em);
+        User organizer = new User("test-user-1", "pass", true, eventsDAO);
+
+        UsersDAO usersDAO = new UsersDAOImpl(em);
+        usersDAO.addUser(organizer);
+
+        Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
+        User candidate = new User("candidate-1", "mate-1-pass", false, eventsDAO);
+        eventsDAO.addEvent(event);
+        usersDAO.addUser(candidate);
+
+        MateStatusRequestsDAO mateStatusRequestsDAO = new MateStatusRequestsDAOImpl(em);
+        MateStatusRequest request = new MateStatusRequest(event, candidate);
+        mateStatusRequestsDAO.addRequest(request);
+
+        assertEquals(0, mateStatusRequestsDAO.findRequests(event, candidate, true).size());
+        assertEquals(1, mateStatusRequestsDAO.findRequests(event, candidate, false).size());
+        assertEquals(1, mateStatusRequestsDAO.findRequests(event, null, false).size());
+        assertEquals(1, mateStatusRequestsDAO.findRequests(null, candidate, false).size());
+        assertEquals(1, mateStatusRequestsDAO.findRequests(null, null, false).size());
+
+    }
+
+    @Test
+    public void cancelMateStatusRequest() {
+        EventKind eventKind = new EventKind("test-event-kind-1");
+        EventType eventType = new EventType("test-event-type-1", eventKind);
+
+        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
+        eventKindsDAO.addEventKind(eventKind);
+
+        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
+        eventTypesDAO.addEventType(eventType);
+
+        EventsDAO eventsDAO = new EventsDAOImpl(em);
+        User organizer = new User("test-user-1", "pass", true, eventsDAO);
+
+        UsersDAO usersDAO = new UsersDAOImpl(em);
+        usersDAO.addUser(organizer);
+
+        Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
+        User candidate = new User("candidate-1", "mate-1-pass", false, eventsDAO);
+        eventsDAO.addEvent(event);
+        usersDAO.addUser(candidate);
+
+        MateStatusRequestsDAO mateStatusRequestsDAO = new MateStatusRequestsDAOImpl(em);
+        MateStatusRequest request = new MateStatusRequest(event, candidate);
+        mateStatusRequestsDAO.addRequest(request);
+
+        assertEquals(1, mateStatusRequestsDAO.findRequests(event, candidate, false).size());
+
+        mateStatusRequestsDAO.cancelRequest(request);
+        assertEquals(0, mateStatusRequestsDAO.findRequests(null, null, false).size());
+        assertEquals(0, mateStatusRequestsDAO.findRequests(null, null, true).size());
+    }
 
     //MateStatusResponsesDAO Tests
+    @Test
+    public void addMateStatusResponseAndGetResponses() {
+        EventKind eventKind = new EventKind("test-event-kind-1");
+        EventType eventType = new EventType("test-event-type-1", eventKind);
+
+        EventKindsDAO eventKindsDAO = new EventKindsDAOImpl(em);
+        eventKindsDAO.addEventKind(eventKind);
+
+        EventTypesDAO eventTypesDAO = new EventTypesDAOImpl(em);
+        eventTypesDAO.addEventType(eventType);
+
+        EventsDAO eventsDAO = new EventsDAOImpl(em);
+        User organizer = new User("test-user-1", "pass", true, eventsDAO);
+
+        UsersDAO usersDAO = new UsersDAOImpl(em);
+        usersDAO.addUser(organizer);
+
+        Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
+        User candidate = new User("candidate-1", "mate-1-pass", false, eventsDAO);
+        eventsDAO.addEvent(event);
+        usersDAO.addUser(candidate);
+
+        MateStatusRequestsDAO mateStatusRequestsDAO = new MateStatusRequestsDAOImpl(em);
+        MateStatusRequest request = new MateStatusRequest(event, candidate);
+        mateStatusRequestsDAO.addRequest(request);
+
+        MateStatusResponsesDAO mateStatusResponsesDAO = new MateStatusResponsesDAOImpl(em);
+        MateStatusResponse response = new MateStatusResponse(true, organizer, request);
+        mateStatusResponsesDAO.addResponse(response);
+
+        assertEquals(1, mateStatusResponsesDAO.getResponses().size());
+    }
+
 
     //OrganizerStatusRequestsDAO Tests
+    @Test
+    public void addOrganizerStatusRequestAndGetRequests() {
+        EventsDAO eventsDAO = new EventsDAOImpl(em);
+        UsersDAO usersDAO = new UsersDAOImpl(em);
+        User candidate = new User("test-user-1", "pass", true, eventsDAO);
+        usersDAO.addUser(candidate);
+
+        OrganizerStatusRequestsDAO organizerStatusRequestsDAO = new OrganizerStatusRequestsDAOImpl(em);
+        OrganizerStatusRequest request = new OrganizerStatusRequest(candidate);
+        organizerStatusRequestsDAO.addRequest(request);
+
+        assertEquals(1, organizerStatusRequestsDAO.getRequests().size());
+        assertEquals(request, organizerStatusRequestsDAO.getRequests().get(0));
+    }
+
+    @Test
+    public void addOrganizerStatusRequestAndFind() {
+        EventsDAO eventsDAO = new EventsDAOImpl(em);
+        UsersDAO usersDAO = new UsersDAOImpl(em);
+        User candidate = new User("test-user-1", "pass", true, eventsDAO);
+        usersDAO.addUser(candidate);
+
+        OrganizerStatusRequestsDAO organizerStatusRequestsDAO = new OrganizerStatusRequestsDAOImpl(em);
+        OrganizerStatusRequest request = new OrganizerStatusRequest(candidate);
+        organizerStatusRequestsDAO.addRequest(request);
+
+        assertEquals(0, organizerStatusRequestsDAO.findRequests(candidate, true).size());
+        assertEquals(1, organizerStatusRequestsDAO.findRequests(candidate, false).size());
+        assertEquals(1, organizerStatusRequestsDAO.findRequests(null, false).size());
+    }
+
+    @Test
+    public void cancelOrganizerStatusRequestAndGetRequests() {
+        EventsDAO eventsDAO = new EventsDAOImpl(em);
+        UsersDAO usersDAO = new UsersDAOImpl(em);
+        User candidate = new User("test-user-1", "pass", true, eventsDAO);
+        usersDAO.addUser(candidate);
+
+        OrganizerStatusRequestsDAO organizerStatusRequestsDAO = new OrganizerStatusRequestsDAOImpl(em);
+        OrganizerStatusRequest request = new OrganizerStatusRequest(candidate);
+        organizerStatusRequestsDAO.addRequest(request);
+
+        assertEquals(1, organizerStatusRequestsDAO.getRequests().size());
+
+        organizerStatusRequestsDAO.cancelRequest(request);
+        assertEquals(0, organizerStatusRequestsDAO.getRequests().size());
+    }
 
     //OrganizerStatusResponsesDAO Tests
+    @Test
+    public void addOrganizerStatusResponseAndGetResponses() {
+        EventsDAO eventsDAO = new EventsDAOImpl(em);
+        UsersDAO usersDAO = new UsersDAOImpl(em);
+        User candidate = new User("test-user-1", "pass", true, eventsDAO);
+        User observer = new AdminUser("observer", "observer", true, eventsDAO, usersDAO);
+        usersDAO.addUser(candidate);
+        usersDAO.addUser(observer);
+
+        OrganizerStatusRequestsDAO organizerStatusRequestsDAO = new OrganizerStatusRequestsDAOImpl(em);
+        OrganizerStatusRequest request = new OrganizerStatusRequest(candidate);
+        organizerStatusRequestsDAO.addRequest(request);
+
+        assertEquals(1, organizerStatusRequestsDAO.getRequests().size());
+
+        OrganizerStatusResponsesDAO organizerStatusResponsesDAO = new OrganizerStatusResponsesDAOImpl(em);
+        OrganizerStatusResponse response = new OrganizerStatusResponse(true, observer, request);
+        organizerStatusResponsesDAO.addResponse(response);
+
+        assertEquals(1, organizerStatusResponsesDAO.getResponses().size());
+    }
 }

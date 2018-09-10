@@ -4,6 +4,7 @@ import com.github.vvhiterussian.restmate.model.EventKind;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 public class EventKindsDAOImpl implements EventKindsDAO {
@@ -29,7 +30,10 @@ public class EventKindsDAOImpl implements EventKindsDAO {
 
     @Override
     public List<EventKind> getEventKinds() {
-        return entityManager.createQuery("select ek from EventKind ek")
+        CriteriaQuery<EventKind> cq = entityManager.getCriteriaBuilder().createQuery(EventKind.class);
+        cq.select(cq.from(EventKind.class));
+
+        return entityManager.createQuery(cq)
                 .getResultList();
     }
 }
