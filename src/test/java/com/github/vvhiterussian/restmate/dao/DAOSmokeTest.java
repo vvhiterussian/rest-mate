@@ -92,7 +92,7 @@ public class DAOSmokeTest {
     //UsersDAO Tests
     @Test
     public void userAddAndFind() {
-        User user = new AdminUser("test-user-1", "password", false, eventsDAO, usersDAO);
+        User user = new AdminUser("test-user-1", "password", false);
         usersDAO.addUser(user);
         assertEquals(user, usersDAO.findByLogin("test-user-1"));
     }
@@ -106,7 +106,7 @@ public class DAOSmokeTest {
         eventKindsDAO.addEventKind(eventKind);
         eventTypesDAO.addEventType(eventType);
 
-        User organizer = new User("test-user-1", "pass", true, eventsDAO);
+        User organizer = new User("test-user-1", "pass", true);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
@@ -128,13 +128,13 @@ public class DAOSmokeTest {
         eventKindsDAO.addEventKind(eventKind);
         eventTypesDAO.addEventType(eventType);
 
-        User organizer = new User("test-user-1", "pass", true, eventsDAO);
+        User organizer = new User("test-user-1", "pass", true);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
         eventsDAO.addEvent(event);
 
-        User mate = new User("mate-1", "mate-1-pass", false, eventsDAO);
+        User mate = new User("mate-1", "mate-1-pass", false);
         eventsDAO.addMate(event, mate);
 
         assertEquals(1, eventsDAO.getMates(event).size());
@@ -149,13 +149,13 @@ public class DAOSmokeTest {
         eventKindsDAO.addEventKind(eventKind);
         eventTypesDAO.addEventType(eventType);
 
-        User organizer = new User("test-user-1", "pass", true, eventsDAO);
+        User organizer = new User("test-user-1", "pass", true);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
         eventsDAO.addEvent(event);
 
-        User mate = new User("mate-1", "mate-1-pass", false, eventsDAO);
+        User mate = new User("mate-1", "mate-1-pass", false);
         eventsDAO.addMate(event, mate);
 
         assertEquals(1, eventsDAO.getMates(event).size());
@@ -176,11 +176,11 @@ public class DAOSmokeTest {
         eventKindsDAO.addEventKind(eventKind);
         eventTypesDAO.addEventType(eventType);
 
-        User organizer = new User("test-user-1", "pass", true, eventsDAO);
+        User organizer = new User("test-user-1", "pass", true);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
-        User candidate = new User("candidate-1", "mate-1-pass", false, eventsDAO);
+        User candidate = new User("candidate-1", "mate-1-pass", false);
         eventsDAO.addEvent(event);
         usersDAO.addUser(candidate);
 
@@ -199,11 +199,11 @@ public class DAOSmokeTest {
         eventKindsDAO.addEventKind(eventKind);
         eventTypesDAO.addEventType(eventType);
 
-        User organizer = new User("test-user-1", "pass", true, eventsDAO);
+        User organizer = new User("test-user-1", "pass", true);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
-        User candidate = new User("candidate-1", "mate-1-pass", false, eventsDAO);
+        User candidate = new User("candidate-1", "mate-1-pass", false);
         eventsDAO.addEvent(event);
         usersDAO.addUser(candidate);
 
@@ -226,11 +226,11 @@ public class DAOSmokeTest {
         eventKindsDAO.addEventKind(eventKind);
         eventTypesDAO.addEventType(eventType);
 
-        User organizer = new User("test-user-1", "pass", true, eventsDAO);
+        User organizer = new User("test-user-1", "pass", true);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
-        User candidate = new User("candidate-1", "mate-1-pass", false, eventsDAO);
+        User candidate = new User("candidate-1", "mate-1-pass", false);
         eventsDAO.addEvent(event);
         usersDAO.addUser(candidate);
 
@@ -253,11 +253,11 @@ public class DAOSmokeTest {
         eventKindsDAO.addEventKind(eventKind);
         eventTypesDAO.addEventType(eventType);
 
-        User organizer = new User("test-user-1", "pass", true, eventsDAO);
+        User organizer = new User("test-user-1", "pass", true);
         usersDAO.addUser(organizer);
 
         Event event = new Event("test-event-1", "test-event-1", eventType, organizer);
-        User candidate = new User("candidate-1", "mate-1-pass", false, eventsDAO);
+        User candidate = new User("candidate-1", "mate-1-pass", false);
         eventsDAO.addEvent(event);
         usersDAO.addUser(candidate);
 
@@ -274,7 +274,7 @@ public class DAOSmokeTest {
     //OrganizerStatusRequestsDAO Tests
     @Test
     public void addOrganizerStatusRequestAndGetRequests() {
-        User candidate = new User("test-user-1", "pass", true, eventsDAO);
+        User candidate = new User("test-user-1", "pass", true);
         usersDAO.addUser(candidate);
 
         OrganizerStatusRequest request = new OrganizerStatusRequest(candidate);
@@ -286,7 +286,7 @@ public class DAOSmokeTest {
 
     @Test
     public void addOrganizerStatusRequestAndFind() {
-        User candidate = new User("test-user-1", "pass", true, eventsDAO);
+        User candidate = new User("test-user-1", "pass", true);
         usersDAO.addUser(candidate);
 
         OrganizerStatusRequest request = new OrganizerStatusRequest(candidate);
@@ -299,7 +299,7 @@ public class DAOSmokeTest {
 
     @Test
     public void cancelOrganizerStatusRequestAndGetRequests() {
-        User candidate = new User("test-user-1", "pass", true, eventsDAO);
+        User candidate = new User("test-user-1", "pass", true);
         usersDAO.addUser(candidate);
 
         OrganizerStatusRequest request = new OrganizerStatusRequest(candidate);
@@ -314,8 +314,8 @@ public class DAOSmokeTest {
     //OrganizerStatusResponsesDAO Tests
     @Test
     public void addOrganizerStatusResponseAndGetResponses() {
-        User candidate = new User("test-user-1", "pass", true, eventsDAO);
-        User observer = new AdminUser("observer", "observer", true, eventsDAO, usersDAO);
+        User candidate = new User("test-user-1", "pass", true);
+        User observer = new AdminUser("observer", "observer", true);
         usersDAO.addUser(candidate);
         usersDAO.addUser(observer);
 

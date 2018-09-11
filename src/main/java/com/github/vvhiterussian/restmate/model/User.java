@@ -1,6 +1,8 @@
 package com.github.vvhiterussian.restmate.model;
 
 import com.github.vvhiterussian.restmate.dao.EventsDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -9,6 +11,7 @@ import java.util.Set;
 @Table(name = "USERS")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING)
+@Component
 public class User {
 
     @Id
@@ -27,17 +30,18 @@ public class User {
     @ManyToMany(mappedBy = "mates", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Event> userEvents;
 
+    @Autowired
     @Transient
     private EventsDAO eventsDAO;
 
     public User() {
     }
 
-    public User(String login, String password, boolean isOrganizator, EventsDAO eventsDAO) {
+    public User(String login, String password, boolean isOrganizator) {
         this.login = login;
         this.password = password;
         this.isOrganizer = isOrganizator;
-        this.eventsDAO = eventsDAO;
+//        this.eventsDAO = eventsDAO;
     }
 
     public int getId() {

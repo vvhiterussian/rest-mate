@@ -13,7 +13,7 @@ public class UserTest {
         Event event = mock(Event.class);
 
         boolean isOrganizer = false;
-        User user = new User("test-user-1", "qweqwe", isOrganizer, eventsDAO);
+        User user = new User("test-user-1", "qweqwe", isOrganizer);
         try {
             user.addNewEvent(event);
         } catch (RuntimeException e) {}
@@ -28,7 +28,7 @@ public class UserTest {
         Event event = mock(Event.class);
 
         boolean isOrganizer = true;
-        User user = new User("test-user-1", "qweqwe", isOrganizer, eventsDAO);
+        User user = new User("test-user-1", "qweqwe", isOrganizer);
         try {
             user.addNewEvent(event);
         } catch (RuntimeException e) {}
