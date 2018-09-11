@@ -1,20 +1,21 @@
 package com.github.vvhiterussian.restmate.web;
 
 import com.github.vvhiterussian.restmate.model.Event;
+import com.github.vvhiterussian.restmate.model.User;
 
 import java.util.List;
 
 public class EventsListBean {
-    private String name;
+    private User user;
     private List<Event> events;
 
-    public EventsListBean(String name, List<Event> events) {
-        this.name = name;
+    public EventsListBean(User user, List<Event> events) {
+        this.user = user;
         this.events = events;
     }
 
-    public String getName() {
-        return name;
+    public User getUser() {
+        return user;
     }
 
     public List<Event> getEvents() {

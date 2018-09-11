@@ -6,14 +6,28 @@
     <title>Event list</title>
 </head>
 <body>
-<h1>Hello, ${eventsListBean.name}!</h1>
-<%--<c:forEach begin="1" end="3" var="index">--%>
-    <%--<p>${index}</p>--%>
-<%--</c:forEach>--%>
+<h1>Hello, ${eventsListBean.user.login}!</h1>
+<c:choose>
+    <c:when test="${not empty eventsListBean.events}">
+        <table border="1">
+            <tbody>
+                <c:forEach items="${eventsListBean.events}" var="event">
+                    <tr>
+                        <td><c:out value="${event.name}" escapeXml="true"/></td>
+                        <td><c:out value="${event.description}" escapeXml="false"/></td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </c:when>
+    <c:otherwise>
+        <p>Нет событий.</p>
+    </c:otherwise>
+</c:choose>
 
-<c:forEach items="${eventsListBean.events}" var="event">
-    <p>${event.name} ${event.description}</p>
-</c:forEach>
+<p>
+    <a href="/events/add">Добавить событие</a>
+</p>
 
 </body>
 </html>

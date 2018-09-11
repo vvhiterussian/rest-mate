@@ -1,6 +1,7 @@
 package com.github.vvhiterussian.restmate.web;
 
 import com.github.vvhiterussian.restmate.dao.EventsDAO;
+import com.github.vvhiterussian.restmate.dao.UsersDAO;
 import com.github.vvhiterussian.restmate.model.Event;
 import com.github.vvhiterussian.restmate.model.EventKind;
 import com.github.vvhiterussian.restmate.model.EventType;
@@ -21,26 +22,28 @@ public class EventListController {
     @Autowired
     EventsDAO eventsDAO;
 
+    @Autowired
+    UsersDAO usersDAO;
+
     @GetMapping(path = "/events/all")
     public String getEvents(ModelMap model) {
         List<Event> events = new ArrayList<>();
-        EventsListBean eventsListBean = new EventsListBean("Man", events);
+        User user = new User("login-1", "pass-1", false);
+        EventsListBean eventsListBean = new EventsListBean(user, events);
 
         events.add(new Event(
                 "test-event",
                 "test-event-description",
                 new EventType("test-event-type", new EventKind("fun")),
-                new User("login", "pass", false, null)));
+                new User("login", "pass", false)));
 
-        model.put("name", "man");
         model.put("eventsListBean", eventsListBean);
-
         return "event-list";
     }
 
     @GetMapping(path = "/events/add")
     public String addEventAction() {
-        return "events-add";
+        return "event-add";
     }
 
     @PostMapping(path = "/events/add")
