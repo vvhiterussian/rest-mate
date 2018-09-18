@@ -10,8 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import javax.persistence.EntityManager;
-
 import static org.junit.Assert.assertEquals;
 
 @WebAppConfiguration
@@ -19,9 +17,6 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DAOSmokeTest {
-
-    @Autowired
-    private EntityManager em;
 
     @Autowired
     EventKindsDAO eventKindsDAO;

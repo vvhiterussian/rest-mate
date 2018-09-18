@@ -1,3 +1,4 @@
+/classes/
 /target/
 /out/
 !.mvn/wrapper/maven-wrapper.jar

@@ -37,6 +37,11 @@ public class UsersDAOImpl implements UsersDAO {
     }
 
     @Override
+    public User getUserById(int id) {
+        return entityManager.find(User.class, id);
+    }
+
+    @Override
     public void addUser(User user) {
         entityManager.getTransaction().begin();
 

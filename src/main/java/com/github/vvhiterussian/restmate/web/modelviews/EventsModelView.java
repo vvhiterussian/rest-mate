@@ -1,15 +1,15 @@
-package com.github.vvhiterussian.restmate.web;
+package com.github.vvhiterussian.restmate.web.modelviews;
 
 import com.github.vvhiterussian.restmate.model.Event;
 import com.github.vvhiterussian.restmate.model.User;
 
 import java.util.List;
 
-public class EventsListBean {
+public class EventsModelView {
     private User user;
     private List<Event> events;
 
-    public EventsListBean(User user, List<Event> events) {
+    public EventsModelView(User user, List<Event> events) {
         this.user = user;
         this.events = events;
     }

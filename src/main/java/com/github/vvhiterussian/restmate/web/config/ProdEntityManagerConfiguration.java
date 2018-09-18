@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,6 +36,13 @@ public class ProdEntityManagerConfiguration extends WebMvcConfigurerAdapter {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver("/pages/", ".jsp");
         resolver.setViewClass(JstlView.class);
         return resolver;
+    }
+
+    @Bean
+    public ViewResolver getRedirectsResolver() {
+        UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
+        urlBasedViewResolver.setViewClass(JstlView.class);
+        return urlBasedViewResolver;
     }
 
     @Override

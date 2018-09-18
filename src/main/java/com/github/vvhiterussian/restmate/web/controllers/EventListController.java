@@ -1,4 +1,4 @@
-package com.github.vvhiterussian.restmate.web;
+package com.github.vvhiterussian.restmate.web.controllers;
 
 import com.github.vvhiterussian.restmate.dao.EventsDAO;
 import com.github.vvhiterussian.restmate.dao.UsersDAO;
@@ -6,6 +6,7 @@ import com.github.vvhiterussian.restmate.model.Event;
 import com.github.vvhiterussian.restmate.model.EventKind;
 import com.github.vvhiterussian.restmate.model.EventType;
 import com.github.vvhiterussian.restmate.model.User;
+import com.github.vvhiterussian.restmate.web.modelviews.EventsModelView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,7 +30,7 @@ public class EventListController {
     public String getEvents(ModelMap model) {
         List<Event> events = new ArrayList<>();
         User user = new User("login-1", "pass-1", false);
-        EventsListBean eventsListBean = new EventsListBean(user, events);
+        EventsModelView eventsModelView = new EventsModelView(user, events);
 
         events.add(new Event(
                 "test-event",
@@ -37,7 +38,7 @@ public class EventListController {
                 new EventType("test-event-type", new EventKind("fun")),
                 new User("login", "pass", false)));
 
-        model.put("eventsListBean", eventsListBean);
+        model.put("eventsModelView", eventsModelView);
         return "event-list";
     }
 

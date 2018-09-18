@@ -30,6 +30,9 @@ public class User {
     @ManyToMany(mappedBy = "mates", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Event> userEvents;
 
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<OrganizerStatusRequest> organizerStatusRequests;
+
     @Autowired
     @Transient
     private EventsDAO eventsDAO;
@@ -82,6 +85,25 @@ public class User {
 
     public void setUserEvents(Set<Event> userEvents) {
         this.userEvents = userEvents;
+    }
+
+    public Set<OrganizerStatusRequest> getOrganizerStatusRequests() {
+        return organizerStatusRequests;
+    }
+
+    public void setOrganizerStatusRequests(Set<OrganizerStatusRequest> organizerStatusRequests) {
+        this.organizerStatusRequests = organizerStatusRequests;
+    }
+
+    public boolean hasOrganizerStatusRequest() {
+        if (organizerStatusRequests != null) {
+            for (OrganizerStatusRequest request : organizerStatusRequests) {
+                if (request.getResponse() == null) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void addNewEvent(Event event) {
